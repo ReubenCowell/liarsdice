@@ -2,21 +2,29 @@ namespace LiarsDice;
 
 public class Cup
 {
-    private List<Dice> _cup = new List<Dice>();
-
+    //private List<Dice> diceList = new List<Dice>();
+    private List<Dice> diceList;
+    public string Name;
+    
+    public Cup(string name)
+    {
+        Name = name;
+        diceList = new List<Dice>();
+    }
+    
     public void AddDice(Dice dice)
     {
-        _cup.Add(dice);
+        diceList.Add(dice);
     }
 
-    public int RollCup()
+    public List<Dice> RollCup() // Method To roll cup
     {
-        for (int i = 0; i < _cup.Count; i++)
+        for (int i = 0; i < diceList.Count; i++)
         {
-            _cup[i].Roll();
+            diceList[i].Roll();
         }
-
-        return 7;
+        
+        return diceList;
     }
 
 }

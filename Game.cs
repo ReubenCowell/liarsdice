@@ -2,6 +2,8 @@ namespace LiarsDice;
 
 public class Game
 {
+    private Cup[] cupArray; // Class-level field to hold the cups for each player
+    
     public void NewGame()
     {
         // Welcomes user to game and establishes how many players are in game
@@ -11,13 +13,42 @@ public class Game
         int num_computers = Convert.ToInt32(Console.ReadLine());
         
         // TODO: Create error checking for above statement
+
+        int human_players = num_players - num_computers; // gets an int with the number of human players
         
-        Cup playerCup = new Cup(); 
-        for (int i = 0; i < 5; i++)
+        
+        String[] playerTypeArray = new String[num_players]; // Makes an array of strings of different 
+        
+        for (int i = 0; i < num_players; i++)
         {
-            Dice dice = new Dice(6);
-            playerCup.AddDice(dice);
+            if (i <= human_players)
+            {
+                playerTypeArray[i] = "Human";
+            }
+            else
+            {
+                playerTypeArray[i] = "Computer";
+            }
         }
+        
+        cupArray = new Cup[num_players]; // Creates array of cups with the length of numbers of players
+
+        for (int i = 0; i < num_players; i++) // for each player, it will create a cup object with 5 dice in it
+        {
+            Console.WriteLine("Player " + (i + 1) + " - " + playerTypeArray[i]);
+            
+            string cupName = $"Cup{i + 1}";
+            cupArray[i] = new Cup(cupName);
+            
+            for (int k = 0; k < 5; k++) // 5 times
+            {
+                Dice dice = new Dice(6); // creates a die with 6 sides
+                cupArray[i].AddDice(dice);
+            }
+
+            Console.WriteLine(cupArray[i].Name);
+        }
+
     }
 
 }
