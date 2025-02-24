@@ -1,0 +1,14 @@
+/Users/reubencowell/Library/CloudStorage/OneDrive-HillsRoadSixthFormCollege/Notes/Computer Science/C#/2. OOP/LiarsDice/obj/Debug/net8.0/LiarsDice.GeneratedMSBuildEditorConfig.editorconfig
+/Users/reubencowell/Library/CloudStorage/OneDrive-HillsRoadSixthFormCollege/Notes/Computer Science/C#/2. OOP/LiarsDice/obj/Debug/net8.0/LiarsDice.AssemblyInfoInputs.cache
+/Users/reubencowell/Library/CloudStorage/OneDrive-HillsRoadSixthFormCollege/Notes/Computer Science/C#/2. OOP/LiarsDice/obj/Debug/net8.0/LiarsDice.AssemblyInfo.cs
+/Users/reubencowell/Library/CloudStorage/OneDrive-HillsRoadSixthFormCollege/Notes/Computer Science/C#/2. OOP/LiarsDice/obj/Debug/net8.0/LiarsDice.csproj.CoreCompileInputs.cache
+/Users/reubencowell/Library/CloudStorage/OneDrive-HillsRoadSixthFormCollege/Notes/Computer Science/C#/2. OOP/LiarsDice/bin/Debug/net8.0/LiarsDice
+/Users/reubencowell/Library/CloudStorage/OneDrive-HillsRoadSixthFormCollege/Notes/Computer Science/C#/2. OOP/LiarsDice/bin/Debug/net8.0/LiarsDice.deps.json
+/Users/reubencowell/Library/CloudStorage/OneDrive-HillsRoadSixthFormCollege/Notes/Computer Science/C#/2. OOP/LiarsDice/bin/Debug/net8.0/LiarsDice.runtimeconfig.json
+/Users/reubencowell/Library/CloudStorage/OneDrive-HillsRoadSixthFormCollege/Notes/Computer Science/C#/2. OOP/LiarsDice/bin/Debug/net8.0/LiarsDice.dll
+/Users/reubencowell/Library/CloudStorage/OneDrive-HillsRoadSixthFormCollege/Notes/Computer Science/C#/2. OOP/LiarsDice/bin/Debug/net8.0/LiarsDice.pdb
+/Users/reubencowell/Library/CloudStorage/OneDrive-HillsRoadSixthFormCollege/Notes/Computer Science/C#/2. OOP/LiarsDice/obj/Debug/net8.0/LiarsDice.dll
+/Users/reubencowell/Library/CloudStorage/OneDrive-HillsRoadSixthFormCollege/Notes/Computer Science/C#/2. OOP/LiarsDice/obj/Debug/net8.0/refint/LiarsDice.dll
+/Users/reubencowell/Library/CloudStorage/OneDrive-HillsRoadSixthFormCollege/Notes/Computer Science/C#/2. OOP/LiarsDice/obj/Debug/net8.0/LiarsDice.pdb
+/Users/reubencowell/Library/CloudStorage/OneDrive-HillsRoadSixthFormCollege/Notes/Computer Science/C#/2. OOP/LiarsDice/obj/Debug/net8.0/LiarsDice.genruntimeconfig.cache
+/Users/reubencowell/Library/CloudStorage/OneDrive-HillsRoadSixthFormCollege/Notes/Computer Science/C#/2. OOP/LiarsDice/obj/Debug/net8.0/ref/LiarsDice.dll
