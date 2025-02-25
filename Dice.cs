@@ -13,7 +13,7 @@ public class Dice
         sides = numSides;
     }
 
-    public int GetValue()
+    public int GetValue() // Returns the last value of the dice
     {
         return value;
     }

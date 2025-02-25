@@ -2,14 +2,15 @@ namespace LiarsDice;
 
 public class Cup
 {
-    //private List<Dice> diceList = new List<Dice>();
     private List<Dice> diceList;
     public string Name;
+    private int[] lastValues;
     
     public Cup(string name)
     {
         Name = name;
         diceList = new List<Dice>();
+        lastValues = new int[5];
     }
     
     public void AddDice(Dice dice)
@@ -24,6 +25,11 @@ public class Cup
             diceList[i].Roll();
         }
         
+        return diceList;
+    }
+    
+    public List<Dice> GetDice()
+    {
         return diceList;
     }
 
