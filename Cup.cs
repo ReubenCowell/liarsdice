@@ -1,14 +1,22 @@
 namespace LiarsDice;
 
+
+public enum PlayerType
+{
+    Human,
+    Computer
+}
+
+
 public class Cup
 {
     private List<Dice> _diceList; // Creates a list filled with dice objects
-    public string Name; 
     private List<int> _lastValues; 
+    public PlayerType ownedBy;
     
-    public Cup(string name)
+    public Cup(PlayerType type)
     {
-        Name = name;
+        ownedBy = type;
         _diceList = new List<Dice>();
         _lastValues = new List<int>();
     }

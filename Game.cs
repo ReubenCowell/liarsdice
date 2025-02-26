@@ -2,67 +2,55 @@ namespace LiarsDice;
 
 public class Game
 {
-    private Cup[] _cupArray; // Class-level field to hold the cups for each player
-    private int _numPlayers;
-    private String[] _playerTypeArray;
-    // todo: make player type an attribute of a cup class
-    private int _lastCallAmount;
-    private int _lastCallValue;
+    private Cup[] _cupArray = null!; // Class-level field to hold the cups for each player
+    private int _numPlayers; // Number of players in game
+    private int _lastCallAmount; // The amount of dice called in last throw
+    private int _lastCallValue; // The value of the dice called in last throw
+    private readonly Random _random = new Random();
     
     
     public void NewGame()
     {
         // Welcomes user to game and establishes how many players are in game
         Console.Write("Welcome to Liars Dice!\nHow many players are playing >>> ");
-        _numPlayers = Convert.ToInt32(Console.ReadLine());
+        while (!int.TryParse(Console.ReadLine(), out _numPlayers) || _numPlayers <= 0)
+        {
+            Console.Write("Invalid input. Please enter a positive integer for players: ");
+        }
         Console.Write("How many players would you like to be a computer? >>> ");
-        int numComputers = Convert.ToInt32(Console.ReadLine());
-
-        // TODO: Create error checking for above statement
+        int numComputers;
+        while (!int.TryParse(Console.ReadLine(), out numComputers) || numComputers <= 0 || numComputers > _numPlayers)
+        {
+            Console.Write("Invalid input. Please enter a positive integer larger than the number of players: ");
+        }
 
         int humanPlayers = _numPlayers - numComputers; // gets an int with the number of human players
-
-
-        _playerTypeArray = new String[_numPlayers]; // Makes a public array of strings with either human or computer in
-        // TODO: could make this a boolean list
-
-        for (int i = 0; i < _numPlayers; i++) 
+        _cupArray = new Cup[_numPlayers]; // Creates array of cups with the length of numbers of players, accessible to the whole Game class
+        Console.WriteLine();
+        for (int i = 0; i < _numPlayers; i++) // for each player, it will create a cup object with 5 dice in it
         {
-            if (i < humanPlayers)
+            if (i < humanPlayers) // Creates cups for each player with the correct type
             {
-                _playerTypeArray[i] = "Human";
+                _cupArray[i] = new Cup(PlayerType.Human);
             }
             else
             {
-                _playerTypeArray[i] = "Computer";
+                _cupArray[i] = new Cup(PlayerType.Computer);
             }
-        }
-
-        _cupArray = new Cup[_numPlayers]; // Creates array of cups with the length of numbers of players, accessible to the whole Game class
-
-        for (int i = 0; i < _numPlayers; i++) // for each player, it will create a cup object with 5 dice in it
-        {
-            Console.WriteLine("Player " + (i + 1) + " - " + _playerTypeArray[i]);
-
-            string cupName = $"Cup{i + 1}";
-            _cupArray[i] = new Cup(cupName);
-
+            Console.WriteLine("     Player " + (i + 1) + " - " + _cupArray[i].ownedBy);
+            
             for (int k = 0; k < 5; k++) // 5 times
             {
-                Dice dice1 = new Dice(6);
-                //Dice dice = new Dice(6); // creates a die with 6 sides
-                _cupArray[i].AddDice(dice1);
+                _cupArray[i].AddDice(new Dice(6));
             }
         }
-
+        Console.WriteLine();
     }
 
     public int GameStartPicker()
     {
-        Console.WriteLine("Starting player will be selected at random:");
-        Random random = new Random();
-        int playerChosen = random.Next(_numPlayers);
-        Console.WriteLine("Player " + (playerChosen + 1) + " will start");
+        int playerChosen = _random.Next(_numPlayers);
+        Console.WriteLine("Player " + (playerChosen + 1) + " will start.\n\n");
         return playerChosen;
     }
 
@@ -74,7 +62,7 @@ public class Game
         for (int i = 0; i < _numPlayers; i++)
         {
             _cupArray[i].RollCup();
-            if (_playerTypeArray[i] == "Human")
+            if (_cupArray[i].ownedBy == PlayerType.Human)
             {
                 Console.Clear();
                 Console.WriteLine("Player " + (i + 1)+" dice ready, press enter:");
@@ -83,6 +71,7 @@ public class Game
                 _cupArray[i].OutputDiceValues();
             }
         }
+        Console.Clear();
     }
 
     private int GetDiceOnTableAmount()
@@ -101,16 +90,16 @@ public class Game
         Console.Clear();
         int nextPlayer; // sets a next player variable to be returned at the end of the round
         
-        if (player == _numPlayers-1) 
+        if (player == _numPlayers-1)
         {
-            nextPlayer = _numPlayers + 1;
+            nextPlayer = 0;
         }
         else
         {
             nextPlayer = player + 1;
         }
         
-        if (_playerTypeArray[player] == "Human")
+        if (_cupArray[player].ownedBy == PlayerType.Human)
         {
             Console.Write($"Player {player+1}, would you like to call or challenge? >>> ");
             string playerChoice = Console.ReadLine();
@@ -312,25 +301,23 @@ public class Game
 
     public void GameLoop(int nextPlayer)
     {
-        Console.WriteLine($"It will be player {nextPlayer+1}'s turn first"); // Start player picked by GameStartPicker in the program.cs file
         bool gameOver = false;
-
+        
         while (!gameOver)
         {
             for (int i = 0; i < _numPlayers; i++)
             {
                 if (CheckLoser(i))
                 {
+                    //TODO: add what happens when someone runs out of dice
                     gameOver = true;
                     Console.WriteLine($"Player {i+1} has lost");
                 }
             }
             
             // First round setup
-            Console.WriteLine("Dice are being rolled....");
             RollAndDisplayDice(); // rolls the dice in user's cups and displays them
-            Console.Clear();
-        
+            
             // TODO: Make the first round different from the rest
             
             int diceAmount = GetDiceOnTableAmount();
@@ -343,9 +330,7 @@ public class Game
                 if (GetDiceOnTableAmount() < diceAmount) // If the number of dice has decreased in the round
                 {
                     Console.WriteLine("Round over, new round beginning");
-                    Console.WriteLine("Dice are being rolled....");
                     RollAndDisplayDice(); // rolls the dice in user's cups and displays them
-                    Console.Clear();
                 }
                 // TODO make round go until somebody loses
 
@@ -357,14 +342,8 @@ public class Game
                     }
                 }
             }
-
-
-
         }
-        
-        
-
-
     }
 }
+
 

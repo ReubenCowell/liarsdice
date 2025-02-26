@@ -2,11 +2,12 @@ namespace LiarsDice;
 
 public class Dice
 {
-    // Creates public attributes of DIce
+    // Creates attributes of DIce
     private int _value;
     private readonly int _sides;
-    
-    Random _rnd = new Random();
+
+
+    readonly Random _rnd = new Random();
 
     public Dice(int numSides) // The constructor method of the dice
     {
