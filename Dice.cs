@@ -3,24 +3,24 @@ namespace LiarsDice;
 public class Dice
 {
     // Creates public attributes of DIce
-    public int value;
-    public int sides;
+    private int _value;
+    private readonly int _sides;
     
-    Random rnd = new Random();
+    Random _rnd = new Random();
 
     public Dice(int numSides) // The constructor method of the dice
     {
-        sides = numSides;
+        _sides = numSides;
     }
 
     public int GetValue() // Returns the last value of the dice
     {
-        return value;
+        return _value;
     }
 
     public int Roll() // Method for rolling dice
     {
-        value = rnd.Next(sides) + 1; // Selects a value equal between 1 and the number of sides of the dice
-        return value;
+        _value = _rnd.Next(_sides) + 1; // Selects a value equal between 1 and the number of sides of the dice
+        return _value;
     }
 }

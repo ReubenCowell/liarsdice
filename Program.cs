@@ -2,7 +2,7 @@
 
 class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
         Game game = new Game(); // Creates new game object with name game
         game.NewGame(); // Runs the NewGame Method

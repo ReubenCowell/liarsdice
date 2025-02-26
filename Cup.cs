@@ -2,50 +2,50 @@ namespace LiarsDice;
 
 public class Cup
 {
-    private List<Dice> diceList; // Creates a list filled with dice objects
+    private List<Dice> _diceList; // Creates a list filled with dice objects
     public string Name; 
-    private List<int> lastValues; 
+    private List<int> _lastValues; 
     
     public Cup(string name)
     {
         Name = name;
-        diceList = new List<Dice>();
-        lastValues = new List<int>();
+        _diceList = new List<Dice>();
+        _lastValues = new List<int>();
     }
     
     public void AddDice(Dice dice)
     {
-        diceList.Add(dice);
+        _diceList.Add(dice);
     }
 
     public List<Dice> RollCup() // Method To roll cup
     {
-        lastValues.Clear();
-        for (int i = 0; i < diceList.Count; i++) // for the number of dice in the cup
+        _lastValues.Clear();
+        for (int i = 0; i < _diceList.Count; i++) // for the number of dice in the cup
         {
-            lastValues.Add(diceList[i].Roll()); // adds a new value from each dice
+            _lastValues.Add(_diceList[i].Roll()); // adds a new value from each dice
         }
-        return diceList;
+        return _diceList;
     }
     
     public List<Dice> GetDice()
     {
-        return diceList;
+        return _diceList;
     }
 
     public int GetCupSize() // Helper method returns the number of dice in the cup
     {
-        return diceList.Count;
+        return _diceList.Count;
     }
 
     public void RemoveDice() // Method removes the last dice in the list
     {
-        diceList.RemoveAt(diceList.Count-1);
+        _diceList.RemoveAt(_diceList.Count-1);
     }
 
     public void OutputDiceValues()
     {
-        Console.WriteLine("Cup contents = {0}", string.Join(", ", lastValues));
+        Console.WriteLine("Cup contents = {0}", string.Join(", ", _lastValues));
         Console.ReadLine();
     }
 

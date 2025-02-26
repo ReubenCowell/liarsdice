@@ -1,15 +1,13 @@
-using System.Linq;
-
 namespace LiarsDice;
 
 public class Game
 {
-    private Cup[] cupArray; // Class-level field to hold the cups for each player
+    private Cup[] _cupArray; // Class-level field to hold the cups for each player
     private int _numPlayers;
     private String[] _playerTypeArray;
     // todo: make player type an attribute of a cup class
-    private int lastCallAmount = 0;
-    private int lastCallValue = 0;
+    private int _lastCallAmount;
+    private int _lastCallValue;
     
     
     public void NewGame()
@@ -18,11 +16,11 @@ public class Game
         Console.Write("Welcome to Liars Dice!\nHow many players are playing >>> ");
         _numPlayers = Convert.ToInt32(Console.ReadLine());
         Console.Write("How many players would you like to be a computer? >>> ");
-        int num_computers = Convert.ToInt32(Console.ReadLine());
+        int numComputers = Convert.ToInt32(Console.ReadLine());
 
         // TODO: Create error checking for above statement
 
-        int human_players = _numPlayers - num_computers; // gets an int with the number of human players
+        int humanPlayers = _numPlayers - numComputers; // gets an int with the number of human players
 
 
         _playerTypeArray = new String[_numPlayers]; // Makes a public array of strings with either human or computer in
@@ -30,7 +28,7 @@ public class Game
 
         for (int i = 0; i < _numPlayers; i++) 
         {
-            if (i < human_players)
+            if (i < humanPlayers)
             {
                 _playerTypeArray[i] = "Human";
             }
@@ -40,22 +38,20 @@ public class Game
             }
         }
 
-        cupArray = new Cup[_numPlayers]; // Creates array of cups with the length of numbers of players, accesible to the whole Game class
+        _cupArray = new Cup[_numPlayers]; // Creates array of cups with the length of numbers of players, accessible to the whole Game class
 
         for (int i = 0; i < _numPlayers; i++) // for each player, it will create a cup object with 5 dice in it
         {
             Console.WriteLine("Player " + (i + 1) + " - " + _playerTypeArray[i]);
 
             string cupName = $"Cup{i + 1}";
-            cupArray[i] = new Cup(cupName);
+            _cupArray[i] = new Cup(cupName);
 
             for (int k = 0; k < 5; k++) // 5 times
             {
-                string diceName = $"Dice{k + 1}";
-                
                 Dice dice1 = new Dice(6);
                 //Dice dice = new Dice(6); // creates a die with 6 sides
-                cupArray[i].AddDice(dice1);
+                _cupArray[i].AddDice(dice1);
             }
         }
 
@@ -70,55 +66,42 @@ public class Game
         return playerChosen;
     }
 
-    public void RollAndDisplayDice()
+    private void RollAndDisplayDice()
     {
         Console.WriteLine("Dice rolled will now be shown one at a time for human players (Press enter when ready:) ");
         Console.ReadLine();
 
         for (int i = 0; i < _numPlayers; i++)
         {
-            Console.Clear();
-            Console.WriteLine("Player " + (i + 1)+" dice ready, press enter:");
-            Console.ReadLine();
-
-            cupArray[i].RollCup();
-            Console.WriteLine($"You have {cupArray[i].GetCupSize()} dice in the cup");
-            cupArray[i].OutputDiceValues();
-        }
-
-        /*for (int i = 0; i < num_players; i++)
-        {
-            Console.Clear();
-            Console.WriteLine("Player " + (i + 1)+" dice ready, press enter:");
-            Console.ReadLine();
-            foreach (var die in cupArray[i].GetDice())
+            _cupArray[i].RollCup();
+            if (_playerTypeArray[i] == "Human")
             {
-                Console.WriteLine("     Result: " + die.Roll());
+                Console.Clear();
+                Console.WriteLine("Player " + (i + 1)+" dice ready, press enter:");
+                Console.ReadLine();
+                Console.WriteLine($"You have {_cupArray[i].GetCupSize()} dice in the cup");
+                _cupArray[i].OutputDiceValues();
             }
-
-            Console.WriteLine("\n Press enter when ready to move on");
-            Console.ReadLine();
-        }*/
+        }
     }
 
-    public int GetDiceOnTableAmount()
+    private int GetDiceOnTableAmount()
     {
         int diceOnTableAmount = 0;
         for (int i = 0; i < _numPlayers; i++)
         {
-            diceOnTableAmount += cupArray[i].GetCupSize();
+            diceOnTableAmount += _cupArray[i].GetCupSize();
         }
 
         return diceOnTableAmount;
     }
 
-    public int RoundLoop(int player)
+    private int RoundLoop(int player)
     {
         Console.Clear();
-
-        int nextPlayer;
+        int nextPlayer; // sets a next player variable to be returned at the end of the round
         
-        if (player == _numPlayers-1)
+        if (player == _numPlayers-1) 
         {
             nextPlayer = _numPlayers + 1;
         }
@@ -131,6 +114,7 @@ public class Game
         {
             Console.Write($"Player {player+1}, would you like to call or challenge? >>> ");
             string playerChoice = Console.ReadLine();
+            // TODO: Add error handling here
             
             if (playerChoice == "call")
             {
@@ -142,7 +126,7 @@ public class Game
                     Console.Write($"Enter the number of {diceValue} dice you would like to call for >>> ");
                     int diceAmount = Convert.ToInt32(Console.ReadLine());
 
-                    if ((diceValue < lastCallValue && diceAmount < lastCallAmount) || diceValue > 6)
+                    if ((diceValue < _lastCallValue && diceAmount < _lastCallAmount) || diceValue > 6)
                     {
                         Console.WriteLine("Please enter a call with either a higher dice amount or value that the last round, or a valid dice value");
                         Console.ReadLine();
@@ -150,14 +134,16 @@ public class Game
                     else
                     {
                         validCall = true;
-                        lastCallAmount = diceAmount;
-                        lastCallValue = diceValue;
+                        _lastCallAmount = diceAmount;
+                        _lastCallValue = diceValue;
                         Console.WriteLine($"Player {player+1} has called that there are {diceAmount} dice with a value of {diceValue} on the table\n\npress enter for {nextPlayer+1}'s turn");
                         Console.ReadLine();
                     }
                     Console.Clear();
                 }
-                
+
+                return nextPlayer;
+
             }
             else if (playerChoice == "challenge")
             {
@@ -169,21 +155,21 @@ public class Game
                 {
                     lastPlayer = player - 1;
                 }
-                Console.WriteLine($"Player {player+1} has made a challenge on player {lastPlayer+1}'s turn!\n\n Player {lastPlayer+1} called that there were {lastCallAmount} dice with a value of {lastCallValue} on the table. \nPress enter to find out how many there are");
+                Console.WriteLine($"Player {player+1} has made a challenge on player {lastPlayer+1}'s turn!\n\n Player {lastPlayer+1} called that there were {_lastCallAmount} dice with a value of {_lastCallValue} on the table. \nPress enter to find out how many there are");
                 Console.ReadLine();
 
-                int NumDice = GetDiceOnTableAmount();
+                int numDice = GetDiceOnTableAmount();
 
-                int[] diceValues = new int[NumDice];
+                int[] diceValues = new int[numDice];
 
                 int buffer = 0;
                 for (int i = 0; i < _numPlayers; i++)
                 {
                     
-                    for (int j = 0; j < cupArray[i].GetCupSize(); j++){
-                        diceValues[buffer + j] = cupArray[i].GetDice().ElementAt(j).GetValue();
+                    for (int j = 0; j < _cupArray[i].GetCupSize(); j++){
+                        diceValues[buffer + j] = _cupArray[i].GetDice().ElementAt(j).GetValue();
                     }
-                    buffer += cupArray[i].GetCupSize();
+                    buffer += _cupArray[i].GetCupSize();
                 }
                 
                 //I now have an array with all the dice on the table in it
@@ -191,23 +177,25 @@ public class Game
                 int countOfChallengedValue = 0; // Gets a count of the number of dice with that value on the table
                 foreach (int i in diceValues)
                 {
-                    if (diceValues[i] == lastCallValue)
+                    if (diceValues[i] == _lastCallValue)
                     {
                         countOfChallengedValue++;
                     }
                 }
 
-                if (countOfChallengedValue >= lastCallAmount)
+                if (countOfChallengedValue >= _lastCallAmount)
                 {
-                    Console.WriteLine($"The challenge was incorrect.\n There were {countOfChallengedValue} dice with a value of {lastCallValue} on the table.\n\nPlayer {player+1} loses a dice \nPress enter for player {nextPlayer}'s turn");
-                    cupArray[player].RemoveDice();
+                    Console.WriteLine($"The challenge was incorrect.\n There were {countOfChallengedValue} dice with a value of {_lastCallValue} on the table.\n\nPlayer {player+1} loses a dice \nPress enter for player {nextPlayer}'s turn");
+                    _cupArray[player].RemoveDice();
                     Console.ReadLine();
+                    return lastPlayer;
                 }
                 else
                 {
-                    Console.WriteLine($"The challenge was correct. There were only {countOfChallengedValue} dice with a value of {lastCallValue} on the table. \n\nPlayer {lastPlayer+1} loses a dice\nPress enter for player {nextPlayer}'s turn");
-                    cupArray[lastPlayer].RemoveDice();
+                    Console.WriteLine($"The challenge was correct. There were only {countOfChallengedValue} dice with a value of {_lastCallValue} on the table. \n\nPlayer {lastPlayer+1} loses a dice\nPress enter for player {nextPlayer}'s turn");
+                    _cupArray[lastPlayer].RemoveDice();
                     Console.ReadLine();
+                    return player;
                 }
             }
         }
@@ -218,12 +206,11 @@ public class Game
             
             int totalDice = GetDiceOnTableAmount();
             double riskTolerance = 0.6; // 60% chance to challenge if the bid is close to expected
-            int averageDicePerPlayer = totalDice / _numPlayers;
             
             int expectedNumberOfDice = totalDice/6;
-            bool playerIsBluffing = lastCallAmount > expectedNumberOfDice;
+            bool playerIsBluffing = _lastCallAmount > expectedNumberOfDice;
 
-            if (playerIsBluffing && new Random().NextDouble() < riskTolerance)
+            if ((playerIsBluffing && new Random().NextDouble() < riskTolerance) && _lastCallAmount != 0)
             {
                 //challenge the player
                 int lastPlayer;
@@ -234,21 +221,21 @@ public class Game
                 {
                     lastPlayer = player - 1;
                 }
-                Console.WriteLine($"Player {player+1} has made a challenge on player {lastPlayer+1}'s turn!\n\n Player {lastPlayer+1} called that there were {lastCallAmount} dice with a value of {lastCallValue} on the table. \nPress enter to find out how many there are");
+                Console.WriteLine($"Player {player+1} has made a challenge on player {lastPlayer+1}'s turn!\n\n Player {lastPlayer+1} called that there were {_lastCallAmount} dice with a value of {_lastCallValue} on the table. \nPress enter to find out how many there are");
                 Console.ReadLine();
 
-                int NumDice = GetDiceOnTableAmount();
+                int numDice = GetDiceOnTableAmount();
 
-                int[] diceValues = new int[NumDice];
+                int[] diceValues = new int[numDice];
 
                 int buffer = 0;
                 for (int i = 0; i < _numPlayers; i++)
                 {
                     
-                    for (int j = 0; j < cupArray[i].GetCupSize(); j++){
-                        diceValues[buffer + j] = cupArray[i].GetDice().ElementAt(j).GetValue();
+                    for (int j = 0; j < _cupArray[i].GetCupSize(); j++){
+                        diceValues[buffer + j] = _cupArray[i].GetDice().ElementAt(j).GetValue();
                     }
-                    buffer += cupArray[i].GetCupSize();
+                    buffer += _cupArray[i].GetCupSize();
                 }
                 
                 //I now have an array with all the dice on the table in it
@@ -256,34 +243,54 @@ public class Game
                 int countOfChallengedValue = 0; // Gets a count of the number of dice with that value on the table
                 foreach (int i in diceValues)
                 {
-                    if (diceValues[i] == lastCallValue)
+                    if (diceValues[i] == _lastCallValue)
                     {
                         countOfChallengedValue++;
                     }
                 }
 
-                if (countOfChallengedValue >= lastCallAmount)
+                if (countOfChallengedValue >= _lastCallAmount)
                 {
-                    Console.WriteLine($"The challenge was incorrect.\n There were {countOfChallengedValue} dice with a value of {lastCallValue} on the table.\n\nPlayer {player+1} loses a dice \nPress enter for player {nextPlayer}'s turn");
-                    cupArray[player].RemoveDice();
+                    Console.WriteLine($"The challenge was incorrect.\n There were {countOfChallengedValue} dice with a value of {_lastCallValue} on the table.\n\nPlayer {player+1} loses a dice \nPress enter for player {nextPlayer}'s turn");
+                    _cupArray[player].RemoveDice();
                     Console.ReadLine();
                 }
                 else
                 {
-                    Console.WriteLine($"The challenge was correct. There were only {countOfChallengedValue} dice with a value of {lastCallValue} on the table. \n\nPlayer {lastPlayer+1} loses a dice\nPress enter for player {nextPlayer}'s turn");
-                    cupArray[lastPlayer].RemoveDice();
+                    Console.WriteLine($"The challenge was correct. There were only {countOfChallengedValue} dice with a value of {_lastCallValue} on the table. \n\nPlayer {lastPlayer+1} loses a dice\nPress enter for player {nextPlayer}'s turn");
+                    _cupArray[lastPlayer].RemoveDice();
                     Console.ReadLine();
                 }
             }
             else
             {
                 Console.WriteLine($"Player {player+1}, a computer, has decided not to challenge, it is calling a new bid");
-                
-                
-                
-            }
+                int amountIncrease;
+                if (expectedNumberOfDice >= 5)
+                {
+                    amountIncrease = 3;
+                }
+                else if (expectedNumberOfDice >= 3)
+                {
+                    amountIncrease = 2;
+                }
+                else
+                {
+                    amountIncrease = 1;
+                }
 
-            
+                bool valueIncrease = (new Random().NextDouble() > 0.7) && _lastCallValue <= 6; // 30% chance to change the value as well
+
+                _lastCallAmount += amountIncrease;
+                if (valueIncrease || _lastCallValue == 0)
+                {
+                    _lastCallValue += 1;
+                }
+
+                Console.WriteLine($"They have called {_lastCallAmount} dice with a value of {_lastCallValue}\n\nPress enter to move on");
+                Console.ReadLine();
+
+            }
 
         }
 
@@ -292,7 +299,7 @@ public class Game
 
     private bool CheckLoser(int player) // Returns true if the player has lost
     {
-            if (cupArray[player].GetCupSize() <= 0)
+            if (_cupArray[player].GetCupSize() <= 0)
             {
                 // the person with this cup, who has 0 dice in it is the loser
                 return true;
@@ -306,30 +313,51 @@ public class Game
     public void GameLoop(int nextPlayer)
     {
         Console.WriteLine($"It will be player {nextPlayer+1}'s turn first"); // Start player picked by GameStartPicker in the program.cs file
-        bool GameOver = false;
+        bool gameOver = false;
 
-        while (!GameOver)
+        while (!gameOver)
         {
             for (int i = 0; i < _numPlayers; i++)
             {
                 if (CheckLoser(i))
                 {
-                    GameOver = true;
+                    gameOver = true;
                     Console.WriteLine($"Player {i+1} has lost");
                 }
             }
             
-            
+            // First round setup
             Console.WriteLine("Dice are being rolled....");
             RollAndDisplayDice(); // rolls the dice in user's cups and displays them
             Console.Clear();
         
             // TODO: Make the first round different from the rest
+            
+            int diceAmount = GetDiceOnTableAmount();
+            bool gameRunning = true;
 
-            for (int i = 0; i < _numPlayers; i++)
+            while (gameRunning)
             {
                 nextPlayer = RoundLoop(nextPlayer);
+
+                if (GetDiceOnTableAmount() < diceAmount) // If the number of dice has decreased in the round
+                {
+                    Console.WriteLine("Round over, new round beginning");
+                    Console.WriteLine("Dice are being rolled....");
+                    RollAndDisplayDice(); // rolls the dice in user's cups and displays them
+                    Console.Clear();
+                }
+                // TODO make round go until somebody loses
+
+                for (int i = 0; i < _numPlayers; i++)
+                {
+                    if (CheckLoser(i))
+                    {
+                        Console.WriteLine($"Player {i+1} has lost, they are out of the game");
+                    }
+                }
             }
+
 
 
         }
