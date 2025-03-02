@@ -12,16 +12,18 @@ public class Cup
 {
     private List<Dice> _diceList; // Creates a list filled with dice objects
     private List<int> _lastValues; 
-    public PlayerType ownedBy;
+    public PlayerType OwnedBy;
+    public string Name;
     
-    public Cup(PlayerType type)
+    public Cup(PlayerType type, string name) // Constructor class
     {
-        ownedBy = type;
+        Name = name;
+        OwnedBy = type;
         _diceList = new List<Dice>();
         _lastValues = new List<int>();
     }
     
-    public void AddDice(Dice dice)
+    public void AddDice(Dice dice) // Adds a dice to the dicelist
     {
         _diceList.Add(dice);
     }
@@ -36,12 +38,12 @@ public class Cup
         return _diceList;
     }
     
-    public List<Dice> GetDice()
+    public List<Dice> GetDice() // Returns the dice list
     {
         return _diceList;
     }
 
-    public int GetCupSize() // Helper method returns the number of dice in the cup
+    public int GetCupSize() // Helper method returns the number of dice in the cup as an int
     {
         return _diceList.Count;
     }
@@ -55,6 +57,11 @@ public class Cup
     {
         Console.WriteLine("Cup contents = {0}", string.Join(", ", _lastValues));
         Console.ReadLine();
+    }
+
+    public string PlayerName() // Returns the player name as a string
+    {
+        return Name;
     }
 
 }

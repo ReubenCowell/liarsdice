@@ -12,3 +12,4 @@
 /Users/reubencowell/Library/CloudStorage/OneDrive-HillsRoadSixthFormCollege/Notes/Computer Science/C#/2. OOP/LiarsDice/obj/Debug/net8.0/LiarsDice.pdb
 /Users/reubencowell/Library/CloudStorage/OneDrive-HillsRoadSixthFormCollege/Notes/Computer Science/C#/2. OOP/LiarsDice/obj/Debug/net8.0/LiarsDice.genruntimeconfig.cache
 /Users/reubencowell/Library/CloudStorage/OneDrive-HillsRoadSixthFormCollege/Notes/Computer Science/C#/2. OOP/LiarsDice/obj/Debug/net8.0/ref/LiarsDice.dll
+/Users/reubencowell/Library/CloudStorage/OneDrive-HillsRoadSixthFormCollege/Notes/Computer Science/C#/2. OOP/LiarsDice/obj/Debug/net8.0/LiarsDice.sourcelink.json
